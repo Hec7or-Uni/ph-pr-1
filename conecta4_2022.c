@@ -72,7 +72,12 @@ void C4_actualizar_tablero(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila,
 
 int C4_comprobar_empate(CELDA cuadricula[TAM_FILS][TAM_COLS]){
 //TO DO comprobar si esta jugada llena todo el tablero y hay empate
-	return(0);
+	for	(int i = 1; i < TAM_COLS; i++){
+		if (celda_vacia(cuadricula[TAM_FILS - 1][i])) {
+			return FALSE;
+		}
+	}
+	return TRUE;
 }
 
 int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color){

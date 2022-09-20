@@ -7,7 +7,7 @@ Leer el guión y conocer la documentación suministrada
 - [x] **Paso 2**: Estudiar y depurar el código inicial del juego.
   - [x] Aprended a jugar interaccionando con el juego a través de la memoria.
   - [x] Monitorizar la ejecución de las funciones en C, verificando sobre el tablero en memoria la correcta ejecución.
-  - [ ] Realiza la función `C4_comprobar_empate` que detecta si tras la jugada actual el tablero está lleno.
+  - [x] Realiza la función `C4_comprobar_empate` que detecta si tras la jugada actual el tablero está lleno.
    Jugar, o modificar el tablero en memoria, para verificar su correcto funcionamiento.
   - [ ] Observar el código en ensamblador generado por el compilador y depurarlo paso a paso
   - [ ] Dibuja el mapa de memoria (código, variables globales, pila, etc). 
