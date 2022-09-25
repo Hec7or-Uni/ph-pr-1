@@ -64,14 +64,40 @@ uint8_t conecta4_hay_linea_c_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fil
    return linea;
 }
 
+// devuelve true si encuentra una línea de longitud mayor o igual a 4
+__attribute__((noinline)) uint8_t conecta4_hay_linea_c_arm(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color)
+{
+	int8_t deltas_fila[4] = {0, -1, -1, 1};
+	int8_t deltas_columna[4] = {-1, 0, -1, -1};
+	unsigned int i = 0;
+	uint8_t linea = FALSE;
+	uint8_t long_linea = 0;
+
+	// buscar linea en fila, columna y 2 diagonales
+	for(i=0; (i < 4) && (linea == FALSE); ++i) { //Cambiar el orden de la comprobación
+		// buscar sentido
+		long_linea = conecta4_buscar_alineamiento_arm(cuadricula, fila, columna, color, deltas_fila[i], deltas_columna[i]);
+		linea = long_linea >= 4;
+		if (linea) {
+			continue; //return TRUE¿¿??;
+		}
+		// buscar sentido inverso
+		long_linea += conecta4_buscar_alineamiento_arm(cuadricula, fila-deltas_fila[i],
+			columna-deltas_columna[i], color, -deltas_fila[i], -deltas_columna[i]);
+		linea = long_linea >= 4;
+		//return condicional se podria?
+	}
+	return linea;
+}
+
 void C4_actualizar_tablero(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila,
 	uint8_t columna, uint8_t val)
 {
     celda_poner_valor(&cuadricula[(fila)][(columna)], val);
 }
 
+// comprueba si esta jugada llena todo el tablero y hay empate
 int C4_comprobar_empate(CELDA cuadricula[TAM_FILS][TAM_COLS]){
-//TO DO comprobar si esta jugada llena todo el tablero y hay empate
 	for	(int i = 1; i < TAM_COLS; i++){
 		if (celda_vacia(cuadricula[TAM_FILS - 1][i])) {
 			return FALSE;
@@ -82,7 +108,8 @@ int C4_comprobar_empate(CELDA cuadricula[TAM_FILS][TAM_COLS]){
 
 int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color){
 	// en esta funcion es donde se debe verificar que todas las optimizaciones dan el mismo resultado
-	uint8_t resultado_c_c = conecta4_hay_linea_c_c(cuadricula, fila, columna, color);
+	// uint8_t resultado_c_c = conecta4_hay_linea_c_c(cuadricula, fila, columna, color);
+	uint8_t resultado_c_c = conecta4_hay_linea_c_arm(cuadricula, fila, columna, color);
 	return resultado_c_c;
 }
 
