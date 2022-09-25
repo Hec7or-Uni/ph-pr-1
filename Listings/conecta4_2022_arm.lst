@@ -1,0 +1,172 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             codigo, CODE
+    2 00000000         ;IMPORT NUM_COLUMNAS
+    3 00000000         ;IMPORT NUM_FILAS
+    4 00000000                 EXPORT           conecta4_buscar_alineamiento_ar
+m
+    5 00000000 00000007 
+                       NUM_COLUMNAS
+                               EQU              7
+    6 00000000 00000006 
+                       NUM_FILAS
+                               EQU              6
+    7 00000000                 ENTRY
+    8 00000000         
+    9 00000000         ;r0 <- cuadricula
+   10 00000000         ;r1 <- fila
+   11 00000000         ;r2 <- columna
+   12 00000000         ;r3 <- color
+   13 00000000         ;mem[sp] <- delta_fila
+   14 00000000         ;mem[sp+4] <- delta_col
+   15 00000000         conecta4_buscar_alineamiento_arm
+   16 00000000 E92D4030        STMDB            sp!,{r4,r5,lr}
+   17 00000004         
+   18 00000004         ;Comportamiento equivalente del if:
+   19 00000004         ; !C4_fila_valida(fila) ==
+   20 00000004         ; !((fila >= 1) && (fila <= NUM_FILAS)) ==
+   21 00000004         ; (fila < 1) || (fila > NUM_FILAS)
+   22 00000004         
+   23 00000004 E3510001        cmp              r1,#1       ; if (fila < 1) ret
+                                                            urn 0;
+   24 00000008 3A000016        blo              return0
+   25 0000000C E3510006        cmp              r1,#NUM_FILAS ; if (fila > NUM_
+                                                            FILAS) return 0;
+   26 00000010 8A000014        bhi              return0
+   27 00000014         
+   28 00000014         ; !C4_columna_valida(columna) == !((columna >= 1) && (co
+                       lumna <= NUM_COLUMNAS)) == (columna < 1) || (columna > N
+                       UM_COLUMNAS)
+   29 00000014 E3520001        cmp              r2,#1       ; if (columna < 1) 
+                                                            return 0;
+   30 00000018 3A000012        blo              return0
+   31 0000001C E3520006        cmp              r2,#NUM_FILAS ; if (columna > N
+                                                            UM_COLUMNAS) return
+                                                             0;
+   32 00000020 8A000010        bhi              return0
+   33 00000024         
+   34 00000024 E0804002        add              r4,r0,r2    ; r4 = r0 + r2
+   35 00000028 E7D44181        ldrb             r4,[r4,r1,LSL#3] ; r4 = mem[r0+
+                                                            r2+r1*8] = cuadricu
+                                                            la[columna+fila*8]
+   36 0000002C E3140004        tst              r4, #0x4    ; celda_vacia(cuadr
+                                                            icula[fila][columna
+                                                            ]) == 0
+   37 00000030 0A00000C        beq              return0
+   38 00000034         
+   39 00000034 E2045003        and              r5, r4, #0x3 ; r5 = celda_color
+                                                            (cuadricula[fila][c
+                                                            olumna])
+   40 00000038 E1550003        cmp              r5,r3       ; if (r5 != color) 
+                                                            return 0;
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   41 0000003C 1A000009        bne              return0
+   42 00000040         
+   43 00000040 E59D400C        ldr              r4,[sp,#12] ; r4 <- delta_fila
+   44 00000044 E59D5010        ldr              r5,[sp,#16] ; r5 <- delta_col
+   45 00000048         
+   46 00000048 E0811004        add              r1, r1, r4  ; r1 <- nueva_fila 
+                                                            = fila + delta_fila
+                                                            
+   47 0000004C E0822005        add              r2, r2, r5  ; r2 <- nueva_colum
+                                                            na = columna + delt
+                                                            a_columna
+   48 00000050         
+   49 00000050         ;str r5,[sp,#-4]
+   50 00000050         ;str r4,[sp,#-4]
+   51 00000050 E92D0030        STMDB            sp!,{r4,r5} ; PUSH{delta_fila,d
+                                                            elta_col} (cargar p
+                                                            arametros)
+   52 00000054 EBFFFFFE        bl               conecta4_buscar_alineamiento_ar
+m
+   53 00000058 E28DD008        add              sp, sp, #8  ; liberar parametro
+                                                            s
+   54 0000005C         
+   55 0000005C E2800001        add              r0, r0, #1  ; r0 = 1 + conecta4
+                                                            _buscar_alineamient
+                                                            o_arm(..)
+   56 00000060 E8BD4030        LDMIA            sp!,{r4,r5,lr}
+   57 00000064 E12FFF1E        bx               lr
+   58 00000068         
+   59 00000068         return0
+   60 00000068 E3A00000        mov              r0,#0
+   61 0000006C E8BD4030        LDMIA            sp!,{r4,r5,lr}
+   62 00000070 E12FFF1E        bx               lr
+   63 00000074         
+   64 00000074                 END
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\conecta4_2022_arm.d -o.\objects\conecta4_2022_arm.o -IC:\Keil_v5\ARM\RV3
+1\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="
+__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" --list=.\listings\conec
+ta4_2022_arm.lst conecta4_2022_arm.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+codigo 00000000
+
+Symbol: codigo
+   Definitions
+      At line 1 in file conecta4_2022_arm.s
+   Uses
+      None
+Comment: codigo unused
+conecta4_buscar_alineamiento_arm 00000000
+
+Symbol: conecta4_buscar_alineamiento_arm
+   Definitions
+      At line 15 in file conecta4_2022_arm.s
+   Uses
+      At line 4 in file conecta4_2022_arm.s
+      At line 52 in file conecta4_2022_arm.s
+
+return0 00000068
+
+Symbol: return0
+   Definitions
+      At line 59 in file conecta4_2022_arm.s
+   Uses
+      At line 24 in file conecta4_2022_arm.s
+      At line 26 in file conecta4_2022_arm.s
+      At line 30 in file conecta4_2022_arm.s
+      At line 32 in file conecta4_2022_arm.s
+      At line 37 in file conecta4_2022_arm.s
+      At line 41 in file conecta4_2022_arm.s
+
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+NUM_COLUMNAS 00000007
+
+Symbol: NUM_COLUMNAS
+   Definitions
+      At line 5 in file conecta4_2022_arm.s
+   Uses
+      None
+Comment: NUM_COLUMNAS unused
+NUM_FILAS 00000006
+
+Symbol: NUM_FILAS
+   Definitions
+      At line 6 in file conecta4_2022_arm.s
+   Uses
+      At line 25 in file conecta4_2022_arm.s
+      At line 31 in file conecta4_2022_arm.s
+
+2 symbols
+337 symbols in table

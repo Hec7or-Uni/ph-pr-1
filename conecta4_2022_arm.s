@@ -1,10 +1,10 @@
-AREA codigo,CODE
+	AREA codigo, CODE
 	;IMPORT NUM_COLUMNAS
 	;IMPORT NUM_FILAS
 	EXPORT conecta4_buscar_alineamiento_arm
-	NUM_COLUMNAS	EQU 7
-	NUM_FILAS			EQU 6
-ENTRY
+NUM_COLUMNAS	EQU 7
+NUM_FILAS		EQU 6
+	ENTRY
 	
 ;r0 <- cuadricula
 ;r1 <- fila
@@ -20,24 +20,24 @@ conecta4_buscar_alineamiento_arm
 	;	!((fila >= 1) && (fila <= NUM_FILAS)) ==
 	;	(fila < 1) || (fila > NUM_FILAS)
 	
-	cmp r1,#1 				; if (fila < 1) return 0;
+	cmp r1,#1			; if (fila < 1) return 0;
 	blo return0
 	cmp r1,#NUM_FILAS	; if (fila > NUM_FILAS) return 0;
 	bhi return0
 	
 	; !C4_columna_valida(columna) == !((columna >= 1) && (columna <= NUM_COLUMNAS)) == (columna < 1) || (columna > NUM_COLUMNAS)
-	cmp r2,#1 				; if (columna < 1) return 0;
+	cmp r2,#1			; if (columna < 1) return 0;
 	blo return0
 	cmp r2,#NUM_FILAS	; if (columna > NUM_COLUMNAS) return 0;
 	bhi return0
 	
-	add r4,r0,r2					; r4 = r0 + r2
+	add r4,r0,r2			; r4 = r0 + r2
 	ldrb r4,[r4,r1,LSL#3]	; r4 = mem[r0+r2+r1*8] = cuadricula[columna+fila*8]
-	tst r4, #0x4					; celda_vacia(cuadricula[fila][columna]) == 0
+	tst r4, #0x4			; celda_vacia(cuadricula[fila][columna]) == 0
 	beq return0
 	
 	and r5, r4, #0x3	; r5 = celda_color(cuadricula[fila][columna])
-	cmp r5,r3					; if (r5 != color) return 0;
+	cmp r5,r3			; if (r5 != color) return 0;
 	bne return0
 	
 	ldr r4,[sp,#12]		; r4 <- delta_fila
