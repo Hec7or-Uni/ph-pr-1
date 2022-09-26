@@ -15,9 +15,9 @@ Leer el guión y conocer la documentación suministrada
 - [x] **Paso 3**: Analizar el rendimiento. 
   - [x] Hacer uso del analizador de rendimiento (profiling) para analizar el árbol de ejecución y los tiempos de ejecución de las diferentes funciones del juego
   - [x] Determinar las funciones principales del juego y las de mayor peso de cómputo.
-- [ ] **Paso 4**: Implementar la función `conecta4_buscar_alineamiento_arm` en ensamblador ARM.
-  - [ ] `conecta4_buscar_alineamiento_arm` debe tener optimización de código. 
-  - [ ] Crear una nueva versión `conecta4_hay_linea_c_arm`, igual que la anterior pero que invoque a `conecta4_buscar_alineamiento_arm`.
+- [x] **Paso 4**: Implementar la función `conecta4_buscar_alineamiento_arm` en ensamblador ARM.
+  - [x] `conecta4_buscar_alineamiento_arm` debe tener optimización de código. 
+  - [x] Crear una nueva versión `conecta4_hay_linea_c_arm`, igual que la anterior pero que invoque a `conecta4_buscar_alineamiento_arm`.
 
 ## Sesión 2
 ---
