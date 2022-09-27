@@ -1,24 +1,24 @@
 Dependencies for Project 'conecta4_2022', Target 'Target 1': (DO NOT MODIFY !)
 F (.\Startup.s)(0x6330404B)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\startup.lst --xref -o .\objects\startup.o --depend .\objects\startup.d)
-F (.\conecta4_2022_arm.s)(0x6330437C)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\conecta4_2022_arm.lst --xref -o .\objects\conecta4_2022_arm.o --depend .\objects\conecta4_2022_arm.d)
+F (.\conecta4_2022_arm.s)(0x63331F3B)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"--list .\listings\conecta4_2022_arm.lst --xref -o .\objects\conecta4_2022_arm.o --depend .\objects\conecta4_2022_arm.d)
 F (.\celda.h)(0x6330404B)()
-F (.\conecta4_2022.h)(0x6330404B)()
+F (.\conecta4_2022.h)(0x633204FF)()
 F (.\tableros.h)(0x6330404B)()
 F (.\entrada.h)(0x6330404B)()
-F (.\conecta4_2022.c)(0x63304130)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\conecta4_2022.o --omf_browse .\objects\conecta4_2022.crf --depend .\objects\conecta4_2022.d)
-I (conecta4_2022.h)(0x6330404B)
+F (.\conecta4_2022.c)(0x633314B9)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 -Otime --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\conecta4_2022.o --omf_browse .\objects\conecta4_2022.crf --depend .\objects\conecta4_2022.d)
+I (conecta4_2022.h)(0x633204FF)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (celda.h)(0x6330404B)
 I (entrada.h)(0x6330404B)
 I (tableros.h)(0x6330404B)
-F (.\main.c)(0x6330404B)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
-I (conecta4_2022.h)(0x6330404B)
+F (.\main.c)(0x6330404B)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 -Otime --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+I (conecta4_2022.h)(0x633204FF)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 I (celda.h)(0x6330404B)
 I (entrada.h)(0x6330404B)
-F (.\entrada.c)(0x6330404B)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O3 -Otime --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\entrada.o --omf_browse .\objects\entrada.crf --depend .\objects\entrada.d)
+F (.\entrada.c)(0x6330404B)(--c99 --gnu -c --cpu ARM7TDMI -D__EVAL -g -O0 -Otime --apcs=interwork --split_sections-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\objects\entrada.o --omf_browse .\objects\entrada.crf --depend .\objects\entrada.d)
 I (entrada.h)(0x6330404B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)

@@ -2,6 +2,9 @@
 	;IMPORT NUM_COLUMNAS
 	;IMPORT NUM_FILAS
 	EXPORT conecta4_buscar_alineamiento_arm
+	EXPORT conecta4_hay_linea_arm_c
+	IMPORT conecta4_buscar_alineamiento_c
+	PRESERVE8 {TRUE}
 NUM_COLUMNAS	EQU 7
 NUM_FILAS		EQU 6
 	ENTRY
@@ -60,5 +63,81 @@ return0
 	mov r0,#0			
 	LDMIA sp!,{r4,r5,lr}
 	bx lr
+
+;r0 <- cuadricula
+;r1 <- fila
+;r2 <- columna
+;r3 <- color
+conecta4_hay_linea_arm_c
+	; r4 delta_fila
+	; r5 delta_columna
+	STMDB sp!,{r4-r11,lr}
+	LDR r4, =0x01FFFF00;  {0, -1, -1, 1}
+	LDR r5, =0xFFFF00FF;  {-1, 0, -1, -1}
+	STMDB sp!,{r4,r5}
+
+	mov r4, #0; i = 0
+	mov r5, #0; linea = 0
+
+	mov r9, r0  	; cuadricula save
+	mov r10, r1		; fila save
+	mov r11, r2		; columna save
+
+for
+	mov r6, r3
+
+	ldrsb r7, [sp,r4]
+	add sp, sp ,#4
+	ldrsb r8, [sp,r4]
+	sub sp, sp ,#4
+	STMDB sp!,{r7,r8}
+	bl conecta4_buscar_alineamiento_c
+	add sp, sp, #8
+
+	mov r3, r6
+
+	mov r6,r0			; long_linea = conecta4_buscar_alineamiento_c(...)
 	
+	;recover
+	mov r0,r9
+
+	; if (linea) return TRUE //comportamiento equivalente
+	cmp r6, #4
+	movhs r0, #1
+	bhs returnTrue
+
+	mov r5, r3
+
+	sub r1, r10, r7
+	sub r2, r11, r8
+	rsb r7, r7, #0
+	rsb r8, r8, #0
+	STMDB sp!,{r7,r8}
+	bl conecta4_buscar_alineamiento_c
+	add sp, sp, #8
+
+	mov r3, r5
+
+	add r6, r6, r0
+	cmp r6, #4
+	movhs r5, #1
+	movlo r5, #0;????
+
+	;recover
+	mov r0,r9
+	mov r1, r10
+	mov r2, r11
+
+	add r4, r4, #1
+	;	(i < 4) && (linea == FALSE) -> (i != 4) && (linea != TRUE)
+	cmp r4, #4
+	cmpne r5, #1
+	bne for
+
+	mov r0, r5
+returnTrue
+	add sp, sp, #8
+	LDMIA sp!,{r4-r11,lr}
+	bx lr
+
 	END
