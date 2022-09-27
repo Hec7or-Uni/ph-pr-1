@@ -16,6 +16,7 @@ uint8_t C4_calcular_fila(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t columna){
 	return fila <= NUM_FILAS ? fila : ERROR;
 };
 
+
 // devuelve la longitud de la línea más larga
 uint8_t conecta4_buscar_alineamiento_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t
 	fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
@@ -37,6 +38,56 @@ uint8_t conecta4_buscar_alineamiento_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uin
 
     // incrementar longitud y visitar celda vecina
     return 1 + conecta4_buscar_alineamiento_c(cuadricula, nueva_fila, nueva_columna, color, delta_fila, delta_columna);
+}
+
+uint8_t conecta4_hay_linea_arm_arm(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color)
+{
+   int8_t deltas_fila[4] = {0, -1, -1, 1};
+   int8_t deltas_columna[4] = {-1, 0, -1, -1};
+   unsigned int i = 0;
+   uint8_t linea = FALSE;
+   uint8_t long_linea = 0;
+	 uint8_t fila_aux = fila;
+	 uint8_t columna_aux = columna;
+
+	if (!C4_fila_valida(fila) || ! C4_columna_valida(columna) ||
+				celda_vacia(cuadricula[fila][columna]) || (celda_color(cuadricula[fila][columna]) != color)) {
+				return FALSE;
+	}
+
+   // buscar linea en fila, columna y 2 diagonales
+   for(i=0; i < 4; ++i) {
+				long_linea = 1;
+				fila += deltas_fila[i];
+				columna += deltas_columna[i];
+				// buscar sentido
+				while (!(!C4_fila_valida(fila) || ! C4_columna_valida(columna) ||
+									celda_vacia(cuadricula[fila][columna]) || (celda_color(cuadricula[fila][columna]) != color))) {
+					fila += deltas_fila[i];
+					columna += deltas_columna[i];
+					long_linea++;
+
+					if (long_linea == 4) {
+						return TRUE;
+					}
+				}
+				
+				fila = fila_aux - deltas_fila[i];
+				columna = columna_aux - deltas_columna[i];
+				// buscar sentido inverso
+				while (!(!C4_fila_valida(fila) || ! C4_columna_valida(columna) ||
+										celda_vacia(cuadricula[fila][columna]) || (celda_color(cuadricula[fila][columna]) != color))) {
+					fila -= deltas_fila[i];
+					columna -= deltas_columna[i];
+					long_linea++;
+					if (long_linea == 4) {
+						return TRUE;
+					}
+				}
+				fila = fila_aux;
+				columna = columna_aux;
+   }
+   return linea;
 }
 
 // devuelve true si encuentra una línea de longitud mayor o igual a 4
@@ -110,8 +161,9 @@ int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, 
 	// en esta funcion es donde se debe verificar que todas las optimizaciones dan el mismo resultado
 	// uint8_t resultado_c_c = conecta4_hay_linea_c_c(cuadricula, fila, columna, color);
 	// uint8_t resultado_c_arm = conecta4_hay_linea_c_arm(cuadricula, fila, columna, color);
-	uint8_t resultado_arm_c = conecta4_hay_linea_arm_c(cuadricula, fila, columna, color);
-	return resultado_arm_c;
+	//uint8_t resultado_arm_c = conecta4_hay_linea_arm_c(cuadricula, fila, columna, color);
+	uint8_t resultado_arm_arm = conecta4_hay_linea_arm_arm(cuadricula, fila, columna, color);
+	return resultado_arm_arm;
 }
 
 	
