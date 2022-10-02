@@ -22,20 +22,50 @@ Dialog DLL:      TARMP.DLL V1.53.0.0
  
 <h2>Project:</h2>
 C:\Users\Hector\Documents\798095\proy_hardware\proy-hardware\conecta4_2022.uvproj
-Project File Date:  09/27/2022
+Project File Date:  10/02/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Rebuild target 'Target 1'
-assembling conecta4_2022_arm.s...
-compiling main.c...
 assembling Startup.s...
 compiling entrada.c...
+compiling test_tableros.c...
+test_tableros.c(17): warning:  #144-D: a value of type "CELDA (*)[8]" cannot be used to initialize an entity of type "CELDA *"
+        {cuadricula_1, 1, 1, 1, 1},
+test_tableros.c(18): warning:  #144-D: a value of type "const CELDA (*)[8]" cannot be used to initialize an entity of type "CELDA *"
+        {cuadricula_2, 1, 1, 1, 1},
+test_tableros.c(19): warning:  #144-D: a value of type "const CELDA (*)[8]" cannot be used to initialize an entity of type "CELDA *"
+        {cuadricula_3, 1, 1, 1, 1},
+test_tableros.c(20): warning:  #144-D: a value of type "const CELDA (*)[8]" cannot be used to initialize an entity of type "CELDA *"
+        {cuadricula_4, 1, 1, 1, 1},
+test_tableros.c(21): warning:  #144-D: a value of type "const CELDA (*)[8]" cannot be used to initialize an entity of type "CELDA *"
+        {cuadricula_5, 1, 1, 1, 1},
+test_tableros.c(36): warning:  #167-D: argument of type "CELDA *" is incompatible with parameter of type "CELDA (*)[8]"
+      if (tableros[i].res != C4_verificar_4_en_linea(tableros[i].cuadricula, tableros[i].fila, tableros[i].columna, tableros[i].color))
+test_tableros.c(42): warning:  #1-D: last line of file ends without a newline
+  }
+test_tableros.c(32): warning:  #550-D: variable "check"  was set but never used
+    static uint8_t check = 1;
+test_tableros.c: 8 warnings, 0 errors
+compiling main.c...
+main.c(4): warning:  #1295-D: Deprecated declaration test_tableros - give arg types
+  void test_tableros();
+main.c: 1 warning, 0 errors
+assembling conecta4_2022_arm.s...
 compiling conecta4_2022.c...
+tableros.h(17): warning:  #177-D: variable "cuadricula_2"  was declared but never referenced
+  const CELDA cuadricula_2[7][8] =
+tableros.h(27): warning:  #177-D: variable "cuadricula_3"  was declared but never referenced
+  const CELDA cuadricula_3[7][8] =
+tableros.h(37): warning:  #177-D: variable "cuadricula_4"  was declared but never referenced
+  const CELDA cuadricula_4[7][8] =
+tableros.h(47): warning:  #177-D: variable "cuadricula_5"  was declared but never referenced
+  const CELDA cuadricula_5[7][8] =
+conecta4_2022.c: 4 warnings, 0 errors
 linking...
-Program Size: Code=2132 RO-data=32 RW-data=64 ZI-data=1256  
-".\Objects\conecta4_2022.axf" - 0 Error(s), 0 Warning(s).
-Build Time Elapsed:  00:00:00
+Program Size: Code=2556 RO-data=296 RW-data=60 ZI-data=1260  
+".\Objects\conecta4_2022.axf" - 0 Error(s), 13 Warning(s).
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

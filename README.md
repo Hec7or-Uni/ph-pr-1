@@ -24,7 +24,7 @@ Leer el guión y conocer la documentación suministrada
 traer el código fuente de los apartados 5 y 6 lo más avanzado posible.
 
 - [x] **Paso 5**: Implementar la función `conecta4_hay_linea_arm_c` en ensamblador ARM. Debéis tratar de optimizar el código. La función invocará a `conecta4_buscar_alineamiento_c`.
-- [ ] **Paso 6**: Implementar la función `conecta4_hay_linea_arm_arm`. 
+- [x] **Paso 6**: Implementar la función `conecta4_hay_linea_arm_arm`. 
   - Diseña una función en ARM que sustituya a las iniciales de C devolviendo la misma salida.
 
 ## Sesión 3

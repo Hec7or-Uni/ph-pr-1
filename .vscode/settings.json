@@ -1,0 +1,8 @@
+{
+  "files.associations": {
+    "conecta4_2022.h": "c",
+    "tableros.h": "c",
+    "celda.h": "c",
+    "entrada.h": "c"
+  }
+}

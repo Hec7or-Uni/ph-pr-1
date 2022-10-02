@@ -476,6 +476,11 @@
               <FileType>1</FileType>
               <FilePath>.\entrada.c</FilePath>
             </File>
+            <File>
+              <FileName>test_tableros.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\test_tableros.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
