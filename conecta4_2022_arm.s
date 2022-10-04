@@ -32,7 +32,7 @@ conecta4_buscar_alineamiento_arm
 	; !C4_columna_valida(columna) == !((columna >= 1) && (columna <= NUM_COLUMNAS)) == (columna < 1) || (columna > NUM_COLUMNAS)
 	cmp r2,#1			; if (columna < 1) return 0;
 	blo return0
-	cmp r2,#NUM_FILAS	; if (columna > NUM_COLUMNAS) return 0;
+	cmp r2,#NUM_COLUMNAS	; if (columna > NUM_COLUMNAS) return 0;
 	bhi return0
 	
 	add r4,r0,r2			; r4 = r0 + r2
@@ -171,7 +171,7 @@ conecta4_hay_linea_arm_arm
 	; !C4_columna_valida(columna) == !((columna >= 1) && (columna <= NUM_COLUMNAS)) == (columna < 1) || (columna > NUM_COLUMNAS)
 	cmp r2,#1			; if (columna < 1) return 0;
 	blo returnFalseArmArm
-	cmp r2,#NUM_FILAS	; if (columna > NUM_COLUMNAS) return 0;
+	cmp r2,#NUM_COLUMNAS	; if (columna > NUM_COLUMNAS) return 0;
 	bhi returnFalseArmArm
 	
 	add r4,r0,r2			; r4 = r0 + r2
@@ -204,7 +204,7 @@ whileArmArm
 	; !C4_columna_valida(columna) == !((columna >= 1) && (columna <= NUM_COLUMNAS)) == (columna < 1) || (columna > NUM_COLUMNAS)
 	cmp r2, #1			; if (columna < 1) return 0;
 	blo outWhileArmArm
-	cmp r2, #NUM_FILAS	; if (columna > NUM_COLUMNAS) return 0;
+	cmp r2, #NUM_COLUMNAS	; if (columna > NUM_COLUMNAS) return 0;
 	bhi outWhileArmArm
 	
 	add r4, r0, r2			; r4 = r0 + r2
@@ -239,7 +239,7 @@ whileArmArm2
 	; !C4_columna_valida(columna) == !((columna >= 1) && (columna <= NUM_COLUMNAS)) == (columna < 1) || (columna > NUM_COLUMNAS)
 	cmp r2,#1			; if (columna < 1) return 0;
 	blo outWhileArmArm2
-	cmp r2,#NUM_FILAS	; if (columna > NUM_COLUMNAS) return 0;
+	cmp r2,#NUM_COLUMNAS	; if (columna > NUM_COLUMNAS) return 0;
 	bhi outWhileArmArm2
 	
 	add r4,r0,r2			; r4 = r0 + r2
