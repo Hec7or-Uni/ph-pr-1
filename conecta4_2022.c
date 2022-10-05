@@ -162,12 +162,13 @@ int C4_comprobar_empate(CELDA cuadricula[TAM_FILS][TAM_COLS])
 	return TRUE;
 }
 
-int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color)
+int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color, int *fail)
 {
 	uint8_t resultado_c_c = conecta4_hay_linea_c_c(cuadricula, fila, columna, color);
 	uint8_t resultado_c_arm = conecta4_hay_linea_c_arm(cuadricula, fila, columna, color);
 	uint8_t resultado_arm_c = conecta4_hay_linea_arm_c(cuadricula, fila, columna, color);
 	uint8_t resultado_arm_arm = conecta4_hay_linea_arm_arm(cuadricula, fila, columna, color);
+	if (fail != 0) *fail = resultado_c_c != resultado_c_arm || resultado_c_c != resultado_arm_c || resultado_c_c != resultado_arm_arm;
 	return resultado_c_c && resultado_c_arm && resultado_arm_c && resultado_arm_arm;
 }
 
@@ -191,7 +192,7 @@ void conecta4_jugar(void)
 		if (C4_fila_valida(row) && C4_columna_valida(column))
 		{
 			C4_actualizar_tablero(cuadricula_1, row, column, colour);
-			if (C4_verificar_4_en_linea(cuadricula_1, row, column, colour))
+			if (C4_verificar_4_en_linea(cuadricula_1, row, column, colour, 0 /*NULL*/))
 			{
 				while (1)
 					;

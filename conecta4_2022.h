@@ -72,7 +72,7 @@ void C4_actualizar_tablero(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, u
 
 int C4_comprobar_empate(CELDA cuadricula[TAM_FILS][TAM_COLS]);
 
-int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color);
+int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color,  int *fail);
 
 static inline uint8_t C4_alternar_color( uint8_t colour) {
 	return colour == 1 ? 2 : 1; //jugador 1 o jugador 2

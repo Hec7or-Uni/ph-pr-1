@@ -3,7 +3,8 @@
 
 int test(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t f, uint8_t c, const int res)
 {
-  return res != C4_verificar_4_en_linea(cuadricula, f, c, celda_color(cuadricula[f][c]));
+	int fail;
+  return res == C4_verificar_4_en_linea(cuadricula, f, c, celda_color(cuadricula[f][c]), &fail) && !fail;
 }
 
 // Comprueba que da falsos para cada posicion del tablero
@@ -13,7 +14,7 @@ void testAllPostions(CELDA cuadricula[TAM_FILS][TAM_COLS], const int res, uint8_
   {
     for (int j = 1; j <= NUM_COLUMNAS; j++)
     {
-      if (test(cuadricula, i, j, res))
+      if (!test(cuadricula, i, j, res))
       {
         *fila_fail = i;
         *col_fail = j;
@@ -27,7 +28,7 @@ void testSomePositions(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t *filas, uin
 {
   for (uint8_t *f = filas, *c = columnas; *f != 0; f++, c++)
   {
-    if (test(cuadricula, *f, *c, res))
+    if (!test(cuadricula, *f, *c, res))
     {
       *fila_fail = *f;
       *col_fail = *c;
