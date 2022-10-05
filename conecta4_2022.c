@@ -19,7 +19,7 @@ uint8_t C4_calcular_fila(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t columna)
 };
 
 // devuelve la longitud de la línea más larga
-uint8_t conecta4_buscar_alineamiento_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t delta_columna)
+__attribute__((noinline)) uint8_t conecta4_buscar_alineamiento_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t delta_columna)
 {
 	// avanzar hasta que cela esté vacía, sea distinto color o lleguemos al borde
 	if (!C4_fila_valida(fila) || !C4_columna_valida(columna))
@@ -89,7 +89,7 @@ uint8_t conecta4_buscar_alineamiento_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uin
 // }
 
 // devuelve true si encuentra una línea de longitud mayor o igual a 4
-uint8_t conecta4_hay_linea_c_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color)
+__attribute__((noinline)) uint8_t conecta4_hay_linea_c_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color)
 {
 	int8_t deltas_fila[4] = {0, -1, -1, 1};
 	int8_t deltas_columna[4] = {-1, 0, -1, -1};

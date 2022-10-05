@@ -39,7 +39,10 @@ void testSomePositions(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t *filas, uin
 
 void test_tableros()
 {
+#define TEST_TABLEROS
 #include "tableros.h"
+#undef TEST_TABLEROS
+#undef TABLEROS_H
   // Consultar en memoria:
   // (si 0 todo OK)
   static uint8_t fila_fail = 0, col_fail = 0, fail = 0;

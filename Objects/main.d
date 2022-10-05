@@ -4,3 +4,4 @@
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: celda.h
 .\objects\main.o: entrada.h
+.\objects\main.o: test_tableros.h
