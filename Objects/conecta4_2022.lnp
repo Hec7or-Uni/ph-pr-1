@@ -1,6 +1,8 @@
 --cpu ARM7TDMI
 ".\objects\startup.o"
-".\objects\conecta4_2022_arm.o"
+".\objects\conecta4_hay_linea_arm_arm.o"
+".\objects\conecta4_hay_linea_arm_c.o"
+".\objects\conecta4_buscar_alineamiento_arm.o"
 ".\objects\conecta4_2022.o"
 ".\objects\main.o"
 ".\objects\entrada.o"

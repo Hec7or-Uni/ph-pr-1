@@ -1,0 +1,378 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             codigo, CODE
+    2 00000000                 EXPORT           conecta4_hay_linea_arm_arm
+    3 00000000                 PRESERVE8        {TRUE}
+    4 00000000 00000007 
+                       NUM_COLUMNAS
+                               EQU              7
+    5 00000000 00000006 
+                       NUM_FILAS
+                               EQU              6
+    6 00000000                 ENTRY
+    7 00000000         
+    8 00000000         ;r0 <- cuadricula
+    9 00000000         ;r1 <- fila
+   10 00000000         ;r2 <- columna
+   11 00000000         ;r3 <- color
+   12 00000000         conecta4_hay_linea_arm_arm
+   13 00000000 E92D4FF0        STMDB            sp!, {r4-r11, lr} ; Guarda valo
+                                                            r de los registros 
+                                                            para utilizarlos
+   14 00000004 E59F414C        LDR              r4, =0x01FFFF00 ; r4 = {0 , -1 
+                                                            , -1 , 1}
+   15 00000008 E3E05CFF        LDR              r5, =0xFFFF00FF ; r5 = { -1 , 0
+                                                             , -1 , -1}
+   16 0000000C E92D0030        STMDB            sp!, {r4, r5} ; Guarda los vect
+                                                            ores en la pila
+   17 00000010 E3A06000        mov              r6, #0      ; i := 0
+   18 00000014 E1A0A001        mov              r10, r1     ; r10 := fila
+   19 00000018 E1A0B002        mov              r11, r2     ; r11 := columna
+   20 0000001C         
+   21 0000001C         ; return si fila no valida
+   22 0000001C E3510001        cmp              r1, #1
+   23 00000020 3A000044        blo              returnFalse ; salta si : fila <
+                                                             1
+   24 00000024 E3510006        cmp              r1, #NUM_FILAS
+   25 00000028 8A000042        bhi              returnFalse ; salta si : fila >
+                                                             NUM_FILAS
+   26 0000002C         
+   27 0000002C         ; return si columna no valida
+   28 0000002C E3520001        cmp              r2, #1
+   29 00000030 3A000040        blo              returnFalse ; salta si : column
+                                                            a < 1
+   30 00000034 E3520007        cmp              r2, #NUM_COLUMNAS
+   31 00000038 8A00003E        bhi              returnFalse ; salta si : column
+                                                            a > NUM_COLUMNAS
+   32 0000003C         
+   33 0000003C         ; r4 := celda
+   34 0000003C E0804002        add              r4, r0, r2  ; r4 = r0 + r2 = & 
+                                                            cuadricula [0][colu
+                                                            mna]
+   35 00000040 E7D44181        ldrb             r4, [r4, r1, LSL#3] ; r4 = mem[
+                                                            r4+r1*8] = cuadricu
+                                                            la [fila][columna]
+   36 00000044         ; return si celda vacia
+   37 00000044 E3140004        tst              r4, #0x4
+   38 00000048 0A00003A        beq              returnFalse ; salta si : celda 
+                                                            vacia
+   39 0000004C         
+   40 0000004C         ; return si celda != color
+   41 0000004C E2045003        and              r5, r4, #0x3
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   42 00000050 E1550003        cmp              r5, r3
+   43 00000054 1A000037        bne              returnFalse ; salta si : celda 
+                                                            != color
+   44 00000058         
+   45 00000058         ; Mientras i < 4
+   46 00000058         for
+   47 00000058 E3A07001        mov              r7, #1      ; longLinea := 1
+   48 0000005C E19D80D6        ldrsb            r8, [sp, r6] ; r8 := deltas_fil
+                                                            a[i]
+   49 00000060 E28DD004        add              sp, sp, #4
+   50 00000064 E19D90D6        ldrsb            r9, [sp, r6] ; r9 := deltas_col
+                                                            umna[i]
+   51 00000068 E24DD004        sub              sp, sp, #4
+   52 0000006C E0811008        add              r1, r1, r8  ; r1 = fila := fila
+                                                             + deltas_fila[i]
+   53 00000070 E0822009        add              r2, r2, r9  ; r2 = columna := c
+                                                            olumna + deltas_col
+                                                            umna[i]
+   54 00000074         
+   55 00000074         ; Mientras FilaValida & ColumnaValida & CeldaLLena & Mis
+                       moColor
+   56 00000074         while
+   57 00000074         ; break si fila no valida
+   58 00000074 E3510001        cmp              r1, #1
+   59 00000078 3A000012        blo              outWhile    ; salta si : fila <
+                                                             1
+   60 0000007C E3510006        cmp              r1, #NUM_FILAS
+   61 00000080 8A000010        bhi              outWhile    ; salta si : fila >
+                                                             NUM_FILAS
+   62 00000084         
+   63 00000084         ; return si columna no valida
+   64 00000084 E3520001        cmp              r2, #1
+   65 00000088 3A00000E        blo              outWhile    ; salta si : column
+                                                            a < 1
+   66 0000008C E3520007        cmp              r2, #NUM_COLUMNAS
+   67 00000090 8A00000C        bhi              outWhile    ; salta si : column
+                                                            a > NUM_COLUMNAS
+   68 00000094         
+   69 00000094         ; r4 := celda
+   70 00000094 E0804002        add              r4, r0, r2  ; r4 = r0 + r2 = & 
+                                                            cuadricula[0][colum
+                                                            na]
+   71 00000098 E7D44181        ldrb             r4, [r4, r1, LSL#3] ; r4 = mem[
+                                                            r4+r1*8] = cuadricu
+                                                            la[fila][columna]
+   72 0000009C         ; return si celda vacia
+   73 0000009C E3140004        tst              r4, #0x4
+   74 000000A0 0A000008        beq              outWhile    ; salta si : celda 
+                                                            vacia
+   75 000000A4         
+   76 000000A4         
+   77 000000A4         ; return si celda != color
+   78 000000A4 E2045003        and              r5, r4, #0x3
+   79 000000A8 E1550003        cmp              r5, r3
+   80 000000AC 1A000005        bne              outWhile    ; salta si : celda 
+                                                            != color
+   81 000000B0         
+   82 000000B0 E0811008        add              r1, r1, r8  ; fila = fila + del
+                                                            ta_fila[i]
+
+
+
+ARM Macro Assembler    Page 3 
+
+
+   83 000000B4 E0822009        add              r2, r2, r9  ; columna = columna
+                                                             + delta_columna[i]
+                                                            
+   84 000000B8 E2877001        add              r7, r7, #1  ; longLinea++
+   85 000000BC         ; return si longLinea == 4
+   86 000000BC E3570004        cmp              r7, #4
+   87 000000C0 0A000020        beq              returnTrue  ; salta si : longLi
+                                                            nea == 4
+   88 000000C4 EAFFFFEA        b                while
+   89 000000C8         
+   90 000000C8         ; Si !(FilaValida & ColumnaValida & CeldaLLena & MismoCo
+                       lor)
+   91 000000C8         outWhile
+   92 000000C8 E04A1008        sub              r1, r10, r8 ; fila := fila_bak 
+                                                             - delta_fila[i]
+   93 000000CC E04B2009        sub              r2, r11, r9 ; columna := column
+                                                            a_bak - delta_colum
+                                                            na[i]
+   94 000000D0         
+   95 000000D0         ; Mientras FilaValida & ColumnaValida & CeldaLLena & Mis
+                       moColor
+   96 000000D0         while2
+   97 000000D0         ; return si fila no valida
+   98 000000D0 E3510001        cmp              r1, #1
+   99 000000D4 3A000012        blo              outWhile2   ; salta si : fila <
+                                                             1
+  100 000000D8 E3510006        cmp              r1, #NUM_FILAS
+  101 000000DC 8A000010        bhi              outWhile2   ; salta si : fila >
+                                                             NUM_FILAS
+  102 000000E0         
+  103 000000E0         ; return si columna no valida
+  104 000000E0 E3520001        cmp              r2, #1
+  105 000000E4 3A00000E        blo              outWhile2   ; salta si : column
+                                                            a < 1
+  106 000000E8 E3520007        cmp              r2, #NUM_COLUMNAS
+  107 000000EC 8A00000C        bhi              outWhile2   ; salta si : column
+                                                            a > NUM_COLUMNAS
+  108 000000F0         
+  109 000000F0         ; r4 := celda
+  110 000000F0 E0804002        add              r4, r0, r2  ; r4 = r0 + r2 = & 
+                                                            cuadricula[0][colum
+                                                            na]
+  111 000000F4 E7D44181        ldrb             r4, [r4, r1, LSL#3] ; r4 = mem[
+                                                            r4+r1*8] = cuadricu
+                                                            la[fila][columna]
+  112 000000F8         ; return si celda vacia
+  113 000000F8 E3140004        tst              r4, #0x4
+  114 000000FC 0A000008        beq              outWhile2   ; salta si : celda 
+                                                            vacia
+  115 00000100         
+  116 00000100         ; return si celda != color
+  117 00000100 E2045003        and              r5, r4, #0x3
+  118 00000104 E1550003        cmp              r5, r3
+  119 00000108 1A000005        bne              outWhile2   ; salta si : celda 
+                                                            != color
+  120 0000010C         
+  121 0000010C E0411008        sub              r1, r1, r8  ; fila = fila - del
+                                                            ta_fila[i]
+  122 00000110 E0422009        sub              r2, r2, r9  ; columna = columna
+
+
+
+ARM Macro Assembler    Page 4 
+
+
+                                                             - delta_columna[i]
+                                                            
+  123 00000114 E2877001        add              r7, r7, #1  ; longLinea++
+  124 00000118         ; return si longLinea == 4
+  125 00000118 E3570004        cmp              r7, #4
+  126 0000011C 0A000009        beq              returnTrue  ; salta si : longLi
+                                                            nea == 4
+  127 00000120 EAFFFFEA        b                while2
+  128 00000124         
+  129 00000124         ; Si !(FilaValida & ColumnaValida & CeldaLLena & MismoCo
+                       lor)
+  130 00000124         outWhile2
+  131 00000124 E1A0100A        mov              r1, r10     ; fila := fila_bak
+  132 00000128 E1A0200B        mov              r2, r11     ; columna := column
+                                                            a_bak
+  133 0000012C E2866001        add              r6, r6, #1  ; i++
+  134 00000130         ; for i < 4
+  135 00000130 E3560004        cmp              r6, #4
+  136 00000134 1AFFFFC7        bne              for
+  137 00000138         
+  138 00000138         ; Si i == 4 || !(FilaValida & ColumnaValida & CeldaLLena
+                        & MismoColor)
+  139 00000138         returnFalse
+  140 00000138 E3A00000        mov              r0, #0      ; r0 := FALSE
+  141 0000013C E28DD008        add              sp, sp, #8  ; libera vectores d
+                                                            e pila
+  142 00000140 E8BD4FF0        LDMIA            sp!, {r4-r11, lr} ; Recupera el
+                                                             valor de los regis
+                                                            tros
+  143 00000144 E12FFF1E        bx               lr          ; return FALSE
+  144 00000148         
+  145 00000148         ; Si LongLinea == 4
+  146 00000148         returnTrue
+  147 00000148 E3A00001        mov              r0, #1      ; r0 := TRUE
+  148 0000014C E28DD008        add              sp, sp, #8  ; libera vectores d
+                                                            e pila
+  149 00000150 E8BD4FF0        LDMIA            sp!, {r4-r11, lr} ; Recupera el
+                                                             valor de los regis
+                                                            tros
+  150 00000154 E12FFF1E        bx               lr          ; return TRUE
+  151 00000158         
+  152 00000158                 END
+              01FFFF00 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\conecta4_hay_linea_arm_arm.d -o.\objects\conecta4_hay_linea_arm_arm.o -I
+C:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\INC\Phi
+lips --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" --lis
+t=.\listings\conecta4_hay_linea_arm_arm.lst conecta4_hay_linea_arm_arm.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+codigo 00000000
+
+Symbol: codigo
+   Definitions
+      At line 1 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      None
+Comment: codigo unused
+conecta4_hay_linea_arm_arm 00000000
+
+Symbol: conecta4_hay_linea_arm_arm
+   Definitions
+      At line 12 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 2 in file conecta4_hay_linea_arm_arm.s
+Comment: conecta4_hay_linea_arm_arm used once
+for 00000058
+
+Symbol: for
+   Definitions
+      At line 46 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 136 in file conecta4_hay_linea_arm_arm.s
+Comment: for used once
+outWhile 000000C8
+
+Symbol: outWhile
+   Definitions
+      At line 91 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 59 in file conecta4_hay_linea_arm_arm.s
+      At line 61 in file conecta4_hay_linea_arm_arm.s
+      At line 65 in file conecta4_hay_linea_arm_arm.s
+      At line 67 in file conecta4_hay_linea_arm_arm.s
+      At line 74 in file conecta4_hay_linea_arm_arm.s
+      At line 80 in file conecta4_hay_linea_arm_arm.s
+
+outWhile2 00000124
+
+Symbol: outWhile2
+   Definitions
+      At line 130 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 99 in file conecta4_hay_linea_arm_arm.s
+      At line 101 in file conecta4_hay_linea_arm_arm.s
+      At line 105 in file conecta4_hay_linea_arm_arm.s
+      At line 107 in file conecta4_hay_linea_arm_arm.s
+      At line 114 in file conecta4_hay_linea_arm_arm.s
+      At line 119 in file conecta4_hay_linea_arm_arm.s
+
+returnFalse 00000138
+
+Symbol: returnFalse
+   Definitions
+      At line 139 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 23 in file conecta4_hay_linea_arm_arm.s
+      At line 25 in file conecta4_hay_linea_arm_arm.s
+      At line 29 in file conecta4_hay_linea_arm_arm.s
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Relocatable symbols
+
+      At line 31 in file conecta4_hay_linea_arm_arm.s
+      At line 38 in file conecta4_hay_linea_arm_arm.s
+      At line 43 in file conecta4_hay_linea_arm_arm.s
+
+returnTrue 00000148
+
+Symbol: returnTrue
+   Definitions
+      At line 146 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 87 in file conecta4_hay_linea_arm_arm.s
+      At line 126 in file conecta4_hay_linea_arm_arm.s
+
+while 00000074
+
+Symbol: while
+   Definitions
+      At line 56 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 88 in file conecta4_hay_linea_arm_arm.s
+Comment: while used once
+while2 000000D0
+
+Symbol: while2
+   Definitions
+      At line 96 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 127 in file conecta4_hay_linea_arm_arm.s
+Comment: while2 used once
+9 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+NUM_COLUMNAS 00000007
+
+Symbol: NUM_COLUMNAS
+   Definitions
+      At line 4 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 30 in file conecta4_hay_linea_arm_arm.s
+      At line 66 in file conecta4_hay_linea_arm_arm.s
+      At line 106 in file conecta4_hay_linea_arm_arm.s
+
+NUM_FILAS 00000006
+
+Symbol: NUM_FILAS
+   Definitions
+      At line 5 in file conecta4_hay_linea_arm_arm.s
+   Uses
+      At line 24 in file conecta4_hay_linea_arm_arm.s
+      At line 60 in file conecta4_hay_linea_arm_arm.s
+      At line 100 in file conecta4_hay_linea_arm_arm.s
+
+2 symbols
+345 symbols in table

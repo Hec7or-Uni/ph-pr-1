@@ -1,0 +1,207 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             codigo, CODE
+    2 00000000                 EXPORT           conecta4_hay_linea_arm_c
+    3 00000000                 IMPORT           conecta4_buscar_alineamiento_c
+    4 00000000                 PRESERVE8        {TRUE}
+    5 00000000 00000007 
+                       NUM_COLUMNAS
+                               EQU              7
+    6 00000000 00000006 
+                       NUM_FILAS
+                               EQU              6
+    7 00000000                 ENTRY
+    8 00000000         
+    9 00000000         
+   10 00000000         ;r0 <- cuadricula
+   11 00000000         ;r1 <- fila
+   12 00000000         ;r2 <- columna
+   13 00000000         ;r3 <- color
+   14 00000000         conecta4_hay_linea_arm_c
+   15 00000000 E92D4FF0        STMDB            sp!, {r4-r11, lr} ; Guarda valo
+                                                            r de los registros 
+                                                            para utilizarlos
+   16 00000004 E59F40B0        LDR              r4, =0x01FFFF00 ; r4 = {0, -1, 
+                                                            -1, 1}
+   17 00000008 E3E05CFF        LDR              r5, =0xFFFF00FF ; r5 = {-1, 0, 
+                                                            -1, -1}
+   18 0000000C E92D0030        STMDB            sp!, {r4, r5} ; Guarda los vect
+                                                            ores en la pila
+   19 00000010 E3A04000        mov              r4, #0      ; i = 0
+   20 00000014 E3A05000        mov              r5, #0      ; linea = FALSE
+   21 00000018         ; Backups de los parametros
+   22 00000018 E1A09000        mov              r9, r0      ; r9 = cuadricula
+   23 0000001C E1A0A001        mov              r10, r1     ; r10 = fila
+   24 00000020 E1A0B002        mov              r11, r2     ; r11 = columna
+   25 00000024         
+   26 00000024         for
+   27 00000024 E1A06003        mov              r6, r3      ; Backup de r3 en r
+                                                            6
+   28 00000028         ; carga de parametros
+   29 00000028 E19D70D4        ldrsb            r7, [sp, r4] ; r7 = deltas_fila
+                                                            [i]
+   30 0000002C E28DD004        add              sp, sp, #4
+   31 00000030 E19D80D4        ldrsb            r8, [sp, r4] ; r8 = deltas_colu
+                                                            mna[i]
+   32 00000034 E24DD004        sub              sp, sp, #4
+   33 00000038 E92D0180        STMDB            sp!, {r7, r8} ; delta_columnas 
+                                                            := r8, delta_filas 
+                                                            := r7
+   34 0000003C EBFFFFFE        bl               conecta4_buscar_alineamiento_c
+   35 00000040 E28DD008        add              sp, sp, #8  ; libera parametros
+                                                            
+   36 00000044 E1A03006        mov              r3, r6      ; Recupera r3
+   37 00000048 E1A06000        mov              r6, r0      ; long_linea = r6 =
+                                                             resultado de funci
+                                                            on
+   38 0000004C E1A00009        mov              r0, r9      ; Recupera r0
+   39 00000050         
+   40 00000050         ; return true si longLinea >= 4
+   41 00000050 E3560004        cmp              r6, #4
+   42 00000054 23A00001        movhs            r0, #1
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   43 00000058 2A000014        bhs              return      ; salta si: longLin
+                                                            ea >= 4
+   44 0000005C         
+   45 0000005C E1A05003        mov              r5, r3      ; Backup de r3 en r
+                                                            5
+   46 00000060         ; carga de parametros
+   47 00000060 E04A1007        sub              r1, r10, r7 ; fila := fila + de
+                                                            ltas_fila[i]
+   48 00000064 E04B2008        sub              r2, r11, r8 ; columna := column
+                                                            a + deltas_columna[
+                                                            i]
+   49 00000068 E2677000        rsb              r7, r7, #0  ; r7 = -deltas_fila
+                                                            [i]
+   50 0000006C E2688000        rsb              r8, r8, #0  ; r8 = -deltas_colu
+                                                            mna[i]
+   51 00000070 E92D0180        STMDB            sp!, {r7, r8} ; delta_columnas 
+                                                            := r8, delta_filas 
+                                                            := r7
+   52 00000074 EBFFFFFE        bl               conecta4_buscar_alineamiento_c
+   53 00000078 E28DD008        add              sp, sp, #8  ; libera parametros
+                                                            
+   54 0000007C E1A03005        mov              r3, r5      ; Recupera r3
+   55 00000080 E0866000        add              r6, r6, r0  ; long_linea += res
+                                                            ultado de funcion
+   56 00000084 E3560004        cmp              r6, #4
+   57 00000088 23A05001        movhs            r5, #1
+   58 0000008C 33A05000        movlo            r5, #0      ; linea = long_line
+                                                            a >= 4
+   59 00000090         
+   60 00000090         ; Recupera el valor de los parametros
+   61 00000090 E1A00009        mov              r0, r9
+   62 00000094 E1A0100A        mov              r1, r10
+   63 00000098 E1A0200B        mov              r2, r11
+   64 0000009C         
+   65 0000009C         ; guarda del bucle
+   66 0000009C E2844001        add              r4, r4, #1  ; i++
+   67 000000A0 E3540004        cmp              r4, #4
+   68 000000A4 13550001        cmpne            r5, #1
+   69 000000A8 1AFFFFDD        bne              for         ; repite si: i != 4
+                                                             && !linea
+   70 000000AC         
+   71 000000AC E1A00005        mov              r0, r5
+   72 000000B0         return
+   73 000000B0 E28DD008        add              sp, sp, #8  ; libera vectores d
+                                                            e pila
+   74 000000B4 E8BD4FF0        LDMIA            sp!, {r4-r11, lr} ; Recupera el
+                                                             valor de los regis
+                                                            tros
+   75 000000B8 E12FFF1E        bx               lr          ; return linea
+   76 000000BC         
+   77 000000BC                 END
+              01FFFF00 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\conecta4_hay_linea_arm_c.d -o.\objects\conecta4_hay_linea_arm_c.o -IC:\K
+eil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\INC\Philips
+ --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" --list=.\
+listings\conecta4_hay_linea_arm_c.lst conecta4_hay_linea_arm_c.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+codigo 00000000
+
+Symbol: codigo
+   Definitions
+      At line 1 in file conecta4_hay_linea_arm_c.s
+   Uses
+      None
+Comment: codigo unused
+conecta4_hay_linea_arm_c 00000000
+
+Symbol: conecta4_hay_linea_arm_c
+   Definitions
+      At line 14 in file conecta4_hay_linea_arm_c.s
+   Uses
+      At line 2 in file conecta4_hay_linea_arm_c.s
+Comment: conecta4_hay_linea_arm_c used once
+for 00000024
+
+Symbol: for
+   Definitions
+      At line 26 in file conecta4_hay_linea_arm_c.s
+   Uses
+      At line 69 in file conecta4_hay_linea_arm_c.s
+Comment: for used once
+return 000000B0
+
+Symbol: return
+   Definitions
+      At line 72 in file conecta4_hay_linea_arm_c.s
+   Uses
+      At line 43 in file conecta4_hay_linea_arm_c.s
+Comment: return used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+NUM_COLUMNAS 00000007
+
+Symbol: NUM_COLUMNAS
+   Definitions
+      At line 5 in file conecta4_hay_linea_arm_c.s
+   Uses
+      None
+Comment: NUM_COLUMNAS unused
+NUM_FILAS 00000006
+
+Symbol: NUM_FILAS
+   Definitions
+      At line 6 in file conecta4_hay_linea_arm_c.s
+   Uses
+      None
+Comment: NUM_FILAS unused
+2 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+conecta4_buscar_alineamiento_c 00000000
+
+Symbol: conecta4_buscar_alineamiento_c
+   Definitions
+      At line 3 in file conecta4_hay_linea_arm_c.s
+   Uses
+      At line 34 in file conecta4_hay_linea_arm_c.s
+      At line 52 in file conecta4_hay_linea_arm_c.s
+
+1 symbol
+341 symbols in table

@@ -427,9 +427,19 @@
               <FilePath>.\Startup.s</FilePath>
             </File>
             <File>
-              <FileName>conecta4_2022_arm.s</FileName>
+              <FileName>conecta4_hay_linea_arm_arm.s</FileName>
               <FileType>2</FileType>
-              <FilePath>.\conecta4_2022_arm.s</FilePath>
+              <FilePath>.\conecta4_hay_linea_arm_arm.s</FilePath>
+            </File>
+            <File>
+              <FileName>conecta4_hay_linea_arm_c.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\conecta4_hay_linea_arm_c.s</FilePath>
+            </File>
+            <File>
+              <FileName>conecta4_buscar_alineamiento_arm.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\conecta4_buscar_alineamiento_arm.s</FilePath>
             </File>
           </Files>
         </Group>
