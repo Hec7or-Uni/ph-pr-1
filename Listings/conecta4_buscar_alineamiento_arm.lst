@@ -103,10 +103,11 @@ m
    62 00000074         
    63 00000074                 END
 Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
-bjects\conecta4_2022_arm.d -o.\objects\conecta4_2022_arm.o -IC:\Keil_v5\ARM\RV3
-1\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\INC\Philips --predefine="
-__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 526" --list=.\listings\conec
-ta4_2022_arm.lst conecta4_2022_arm.s
+bjects\conecta4_buscar_alineamiento_arm.d -o.\objects\conecta4_buscar_alineamie
+nto_arm.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5
+\ARM\INC\Philips --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SET
+A 526" --list=.\listings\conecta4_buscar_alineamiento_arm.lst conecta4_buscar_a
+lineamiento_arm.s
 
 
 
@@ -117,7 +118,7 @@ codigo 00000000
 
 Symbol: codigo
    Definitions
-      At line 1 in file conecta4_2022_arm.s
+      At line 1 in file conecta4_buscar_alineamiento_arm.s
    Uses
       None
 Comment: codigo unused
@@ -125,23 +126,23 @@ conecta4_buscar_alineamiento_arm 00000000
 
 Symbol: conecta4_buscar_alineamiento_arm
    Definitions
-      At line 14 in file conecta4_2022_arm.s
+      At line 14 in file conecta4_buscar_alineamiento_arm.s
    Uses
-      At line 2 in file conecta4_2022_arm.s
-      At line 51 in file conecta4_2022_arm.s
+      At line 2 in file conecta4_buscar_alineamiento_arm.s
+      At line 51 in file conecta4_buscar_alineamiento_arm.s
 
 return0 00000068
 
 Symbol: return0
    Definitions
-      At line 58 in file conecta4_2022_arm.s
+      At line 58 in file conecta4_buscar_alineamiento_arm.s
    Uses
-      At line 23 in file conecta4_2022_arm.s
-      At line 25 in file conecta4_2022_arm.s
-      At line 29 in file conecta4_2022_arm.s
-      At line 31 in file conecta4_2022_arm.s
-      At line 36 in file conecta4_2022_arm.s
-      At line 40 in file conecta4_2022_arm.s
+      At line 23 in file conecta4_buscar_alineamiento_arm.s
+      At line 25 in file conecta4_buscar_alineamiento_arm.s
+      At line 29 in file conecta4_buscar_alineamiento_arm.s
+      At line 31 in file conecta4_buscar_alineamiento_arm.s
+      At line 36 in file conecta4_buscar_alineamiento_arm.s
+      At line 40 in file conecta4_buscar_alineamiento_arm.s
 
 3 symbols
 
@@ -154,17 +155,17 @@ NUM_COLUMNAS 00000007
 
 Symbol: NUM_COLUMNAS
    Definitions
-      At line 4 in file conecta4_2022_arm.s
+      At line 4 in file conecta4_buscar_alineamiento_arm.s
    Uses
-      At line 30 in file conecta4_2022_arm.s
+      At line 30 in file conecta4_buscar_alineamiento_arm.s
 Comment: NUM_COLUMNAS used once
 NUM_FILAS 00000006
 
 Symbol: NUM_FILAS
    Definitions
-      At line 5 in file conecta4_2022_arm.s
+      At line 5 in file conecta4_buscar_alineamiento_arm.s
    Uses
-      At line 24 in file conecta4_2022_arm.s
+      At line 24 in file conecta4_buscar_alineamiento_arm.s
 Comment: NUM_FILAS used once
 2 symbols
 337 symbols in table
