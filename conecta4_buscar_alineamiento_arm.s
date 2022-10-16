@@ -12,52 +12,49 @@ NUM_FILAS		EQU 6
 ;mem[sp] <- delta_fila
 ;mem[sp+4] <- delta_col
 conecta4_buscar_alineamiento_arm
-	STMDB sp!,{r4,r5,lr}
+	STMDB sp!, {r4, r5, lr} ; Guarda valor de los registros para utilizarlos
 	
-	;Comportamiento equivalente del if:
-	;	!C4_fila_valida(fila) ==
-	;	!((fila >= 1) && (fila <= NUM_FILAS)) ==
-	;	(fila < 1) || (fila > NUM_FILAS)
+	; return si fila no valida
+	cmp r1, #1
+	blo return0             ; salta si: fila < 1
+	cmp r1, #NUM_FILAS
+	bhi return0             ; salta si: fila > NUM_FILAS
 	
-	cmp r1,#1			; if (fila < 1) return 0;
-	blo return0
-	cmp r1,#NUM_FILAS	; if (fila > NUM_FILAS) return 0;
-	bhi return0
+	; return si columna no valida
+	cmp r2, #1
+	blo return0             ; salta si: columna < 1
+	cmp r2, #NUM_COLUMNAS
+	bhi return0             ; salta si: columna > NUM_COLUMNAS
 	
-	; !C4_columna_valida(columna) == !((columna >= 1) && (columna <= NUM_COLUMNAS)) == (columna < 1) || (columna > NUM_COLUMNAS)
-	cmp r2,#1			; if (columna < 1) return 0;
-	blo return0
-	cmp r2,#NUM_COLUMNAS	; if (columna > NUM_COLUMNAS) return 0;
-	bhi return0
+	; r4 := celda
+	add r4, r0, r2          ; r4 = r0+r2 = &cuadricula[0][columna]
+	ldrb r4, [r4, r1, LSL#3]; r4 = mem[r4+r1*8] = cuadricula[fila][columna]
+	; return si celda vacia
+	tst r4, #0x4
+	beq return0             ; salta si: celda vacia
 	
-	add r4,r0,r2			; r4 = r0 + r2
-	ldrb r4,[r4,r1,LSL#3]	; r4 = mem[r0+r2+r1*8] = cuadricula[columna+fila*8]
-	tst r4, #0x4			; celda_vacia(cuadricula[fila][columna]) == 0
-	beq return0
+	; return si celda != color
+	and r5, r4, #0x3
+	cmp r5, r3
+	bne return0             ; salta si: celda != color
+
+	; avanzar indices
+	ldr r4, [sp, #12]       ; r4 = delta_fila
+	ldr r5, [sp, #16]       ; r4 = delta_columna
+	add r1, r1, r4          ; fila    = fila    + delta_fila
+	add r2, r2, r5          ; columna = columna + delta_columna
 	
-	and r5, r4, #0x3	; r5 = celda_color(cuadricula[fila][columna])
-	cmp r5,r3			; if (r5 != color) return 0;
-	bne return0
-	
-	ldr r4,[sp,#12]		; r4 <- delta_fila
-	ldr r5,[sp,#16]		; r5 <- delta_col
-	
-	add r1, r1, r4		; r1 <- nueva_fila = fila + delta_fila
-	add r2, r2, r5		; r2 <- nueva_columna = columna + delta_columna
-	
-	;str r5,[sp,#-4]
-	;str r4,[sp,#-4]
-	STMDB sp!,{r4,r5}	; PUSH{delta_fila,delta_col} (cargar parametros)
+	; carga de parametros
+	STMDB sp!, {r4, r5}     ; delta_columnas := r5, delta_filas := r4
 	bl conecta4_buscar_alineamiento_arm
-	add sp, sp, #8		; liberar parametros
+	add sp, sp, #8          ; libera parametros
+	add r0, r0, #1          ; r0 = resultado de funcion + 1
 	
-	add r0, r0, #1		; r0 = 1 + conecta4_buscar_alineamiento_arm(..)
-	LDMIA sp!,{r4,r5,lr}
-	bx lr
+	LDMIA sp!, {r4, r5, lr} ; Recupera el valor de los registros
+	bx lr                   ; return r0
 	
 return0
-	mov r0,#0			
-	LDMIA sp!,{r4,r5,lr}
-	bx lr
-
+	mov r0, #0              ; r0 = 0
+	LDMIA sp!, {r4, r5, lr} ; Recupera el valor de los registros
+	bx lr                   ; return 0
 	END
