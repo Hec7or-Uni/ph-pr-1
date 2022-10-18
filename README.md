@@ -31,7 +31,7 @@ traer el código fuente de los apartados 5 y 6 lo más avanzado posible.
 ---
 Mostrar que todo lo anterior funciona correctamente.
 
-- [ ] **Paso 7**: Verificación automática y comparación de resultados.
-- [ ] **Paso 8**: Medidas de rendimiento.
+- [x] **Paso 7**: Verificación automática y comparación de resultados.
+- [x] **Paso 8**: Medidas de rendimiento.
 ---
-- [ ] **Paso 9**: Optimizaciones del compilador.
+- [x] **Paso 9**: Optimizaciones del compilador.
