@@ -102,6 +102,54 @@ void C4_actualizar_tablero(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila,
 	celda_poner_valor(&cuadricula[(fila)][(columna)], val);
 }
 
+// devuelve true si encuentra una línea de longitud mayor o igual a 4 (versión en c de la última optimización)
+__attribute__((noinline)) uint8_t conecta4_hay_linea_arm_arm_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color)
+{
+	int8_t deltas_fila[4] = {0, -1, -1, 1};
+	int8_t deltas_columna[4] = {-1, 0, -1, -1};
+	unsigned int i = 0;
+	uint8_t long_linea = 0;
+	uint8_t fila_aux = fila;
+	uint8_t columna_aux = columna;
+
+	if (!C4_fila_valida(fila) || !C4_columna_valida(columna) ||
+				 celda_vacia(cuadricula[fila][columna]) || (celda_color(cuadricula[fila][columna]) != color)) {
+		 return FALSE;
+	}
+
+	// buscar linea en fila, columna y 2 diagonales
+	for (i = 0; i < 4; ++i) {
+		 long_linea = 1;
+		 fila += deltas_fila[i];
+		columna += deltas_columna[i];
+		// buscar sentido
+		 while (!(!C4_fila_valida(fila) || !C4_columna_valida(columna) ||
+											celda_vacia(cuadricula[fila][columna]) || (celda_color(cuadricula[fila][columna]) != color))) {
+				 fila += deltas_fila[i];
+				 columna += deltas_columna[i];
+				 long_linea++;
+
+				 if (long_linea == 4) return TRUE;
+		 }
+
+		 fila = fila_aux - deltas_fila[i];
+		 columna = columna_aux - deltas_columna[i];
+		 // buscar sentido inverso
+		 while (!(!C4_fila_valida(fila) || !C4_columna_valida(columna) ||
+											celda_vacia(cuadricula[fila][columna]) || (celda_color(cuadricula[fila][columna]) != color))) {
+				 fila -= deltas_fila[i];
+				 columna -= deltas_columna[i];
+				 long_linea++;
+				 if (long_linea == 4) {
+						 return TRUE;
+				 }
+		 }
+		 fila = fila_aux;
+		 columna = columna_aux;
+	}
+	return FALSE;
+}
+
 // comprueba si esta jugada llena todo el tablero y hay empate
 int C4_comprobar_empate(CELDA cuadricula[TAM_FILS][TAM_COLS])
 {
@@ -122,13 +170,16 @@ int C4_verificar_4_en_linea(CELDA cuadricula[TAM_FILS][TAM_COLS],
 	uint8_t resultado_c_arm = conecta4_hay_linea_c_arm(cuadricula, fila, columna, color);
 	uint8_t resultado_arm_c = conecta4_hay_linea_arm_c(cuadricula, fila, columna, color);
 	uint8_t resultado_arm_arm = conecta4_hay_linea_arm_arm(cuadricula, fila, columna, color);
-	if (fail != 0) *fail = resultado_c_c != resultado_c_arm ||
-												 resultado_c_c != resultado_arm_c ||
-												 resultado_c_c != resultado_arm_arm;
+	uint8_t resultado_arm_arm_c = conecta4_hay_linea_arm_arm_c(cuadricula, fila, columna, color);
+	if (fail != 0) *fail = resultado_c_c != resultado_c_arm   ||
+												 resultado_c_c != resultado_arm_c   ||
+												 resultado_c_c != resultado_arm_arm ||
+	                       resultado_c_c != resultado_arm_arm_c;
 	return resultado_c_c     &&
 				 resultado_c_arm   &&
 				 resultado_arm_c   &&
-				 resultado_arm_arm;
+				 resultado_arm_arm &&
+	       resultado_arm_arm_c;
 }
 
 void conecta4_jugar(void)

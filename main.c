@@ -9,7 +9,8 @@ int main(void)
 	// inicializar sistema
 	//... practica 2
 
-	test_tableros();
+	//descomentar para ejecutar los tests
+	//test_tableros();
 	
 	// jugar
 	conecta4_jugar();

@@ -59,6 +59,9 @@ uint8_t conecta4_hay_linea_arm_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t f
 uint8_t conecta4_hay_linea_arm_arm(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t
 	columna, uint8_t color);
 
+// devuelve true si encuentra una línea de longitud mayor o igual a 4 (versión en c de la última optimización)
+uint8_t conecta4_hay_linea_arm_arm_c(CELDA cuadricula[TAM_FILS][TAM_COLS], uint8_t fila, uint8_t columna, uint8_t color);
+
 // función principal del juego
 void conecta4_jugar(void);
 
